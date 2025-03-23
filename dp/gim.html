@@ -203,8 +203,7 @@
                     <div class="breadcrumb-text">
                         <h2>BMI calculator</h2>
                         <div class="bt-option">
-                            <a href="./index.html">Home</a>
-                            <a href="#">Pages</a>
+                            <a @click='active_section=0'>Home</a>
                             <span>BMI calculator</span>
                         </div>
                     </div>
@@ -221,62 +220,76 @@
                 <div class="col-lg-6">
                     <div class="section-title chart-title">
                         <span>check your body</span>
-                        <h2>BMI CALCULATOR CHART</h2>
+                        <h2>CALCULATOR CHART</h2>
                     </div>
                     <div class="chart-table">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Bmi</th>
-                                    <th>WEIGHT STATUS</th>
+                                    <th>Параметър</th>
+                                    <th>Стойност</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="point">Below 18.5</td>
-                                    <td>Underweight</td>
+                                    <td >BMI (индекс на телесната маса)</td>
+                                    <td class="point">{{ bmi }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="point">18.5 - 24.9</td>
-                                    <td>Healthy</td>
+                                    <td>Теглова категория</td>
+                                    <td class="point">{{ wCat }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="point">25.0 - 29.9</td>
-                                    <td>Overweight</td>
+                                    <td>BMR (базов метаболитен ритъм)</td>
+                                    <td class="point">{{ bmr }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="point">30.0 - and Above</td>
-                                    <td>Obese</td>
+                                    <td>Kалориен баланс</td>
+                                    <td class="point">{{ calB }} ккал</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="section-title chart-calculate-title">
-                        <span>check your body</span>
-                        <h2>CALCULATE YOUR BMI</h2>
-                    </div>
                     <div class="chart-calculate-form">
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                             labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo
                             viverra maecenas accumsan lacus vel facilisis.</p>
-                        <form action="#">
+                        <form>
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <input type="text" placeholder="Height / cm">
+                                    <label for="Height" style="color: #f36100;">Вашият ръст в см.:</label>
+                                    <input id="Height" type="text" placeholder="Височина / cm" v-model="height">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" placeholder="Weight / kg">
+                                    <label for="Weight" style="color: #f36100;">Вашето тегло в кг.:</label>
+                                    <input id="Weight" type="text" placeholder="Тегло / кг" v-model="weight">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" placeholder="Age">
+                                    <label for="Age" style="color: #f36100;">Вашатавъзраст:</label>
+                                    <input id="Age" type="text" placeholder="Възраст" v-model="age">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" placeholder="Sex">
+                                    <label for="Sex" class="form-label" style="color: #f36100;">Вашият пол</label>
+                                    <select id="Sex" name="Sex" class="form-select" v-model="sex">
+                                        <option value="male">мъж</option>
+                                        <option value="female">жена</option>
+                                    </select>
                                 </div>
                                 <div class="col-lg-12">
-                                    <button type="submit">Calculate</button>
+                                    <label for="Activity" class="form-label" style="color: #f36100;">Оценете вашата физическа активност:</label>
+                                    <select id="Activity" name="Sex" class="form-select" v-model="activity">
+                                        <option value="" disabled selected>фактор на активност</option>
+                                        <option value="1.2">Седящ начин на живот (малко или никакво упражнение)</option>
+                                        <option value="1.375">Леко активен (леко упражнение 1-3 дни в седмицата)</option>
+                                        <option value="1.55">Умерено активен (умерени упражнения 3-5 дни в седмицата)</option>
+                                        <option value="1.725">Много активен (тежки упражнения 6-7 дни в седмицата)</option>
+                                        <option value="1.9">Екстремно активен (твърд физически труд или тренировки два пъти на ден)</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-12">
+                                    <button @click="calculate()">Изчисли</button>
                                 </div>
                             </div>
                         </form>
@@ -288,14 +301,33 @@
     <!-- BMI Calculator Section End -->
 <!-- Меню "Калкулатор" край -->
 
+<!-- Меню "Тренировъчни програми" начало -->
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="img/banner-bg.jpg" v-if="active_section==2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb-text">
+                        <h2>Тренировъчни програми</h2>
+                        <div class="bt-option">
+                            <a @click='active_section=0'>Начало</a>
+                            <span>Тренировъчни програми</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
     <!-- Classes Section Begin -->
-    <section class="classes-section spad">
+    <section class="classes-section spad" v-if="active_section==2">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Our Classes</span>
-                        <h2>WHAT WE CAN OFFER</h2>
+                        <span>Препоръчваме Ви следните</span>
+                        <h2>Тренировъчни програми</h2>
                     </div>
                 </div>
             </div>
@@ -340,52 +372,62 @@
         </div>
     </section>
     <!-- ChoseUs Section End -->
+<!-- Меню "Тренировъчни програми" край -->
 
-    <!-- Banner Section Begin -->
-    <section class="banner-section set-bg" data-setbg="img/banner-bg.jpg">
+<!-- Меню "Хранителни режими" начало -->
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="img/details-hero.jpg" v-if="active_section==3">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <div class="bs-text">
-                        <h2>registration now to get more deals</h2>
-                        <div class="bt-tips">Where health, beauty and fitness meet.</div>
-                        <a href="#" class="primary-btn  btn-normal">Appointment</a>
+                    <div class="breadcrumb-text">
+                        <h2>Хранителни режими</h2>
+                        <div class="bt-option">
+                            <a @click='active_section=0'>Начало</a>
+                            <span style="color: black;">Хранителни режими</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Banner Section End -->
+    <!-- Breadcrumb Section End -->
 
     <!-- Pricing Section Begin -->
-    <section class="pricing-section spad">
+    <section class="pricing-section spad" v-if="active_section==3">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Our Plan</span>
-                        <h2>Choose your pricing plan</h2>
+                        <span>Препоръчваме Ви следните</span>
+                        <h2>Хранителни режими</h2>
                     </div>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-8">
                     <div class="ps-item">
-                        <h3>Class drop-in</h3>
-                        <div class="pi-price">
-                            <h2>$ 39.0</h2>
-                            <span>SINGLE CLASS</span>
-                        </div>
+                        <h3>Поддържане на теглото</h3>
+                        <p>Перфектното съотношение между основните хранителни съставки за ежедневна диета е:</p>
                         <ul>
-                            <li>Free riding</li>
-                            <li>Unlimited equipments</li>
-                            <li>Personal trainer</li>
-                            <li>Weight losing classes</li>
-                            <li>Month to mouth</li>
-                            <li>No time restriction</li>
+                            <li>30% протеини</li>
+                            <li>55-60% въглехидрати</li>
+                            <li>10-15% мазнини</li>
                         </ul>
-                        <a href="#" class="primary-btn pricing-btn">Enroll now</a>
-                        <a href="#" class="thumb-icon"><i class="fa fa-picture-o"></i></a>
+                        <p>Запомнете, че въглехидратите са важни за зареждането на черния дроб с гликоген, които се
+                            изразходват по време на тренировка. Покачвайте приема на въглехидрати веднага след тренировка,
+                            за да отключите процеса на възстановяване. Разпределение на основните хранителни съставки
+                            през деня за културист тежащ 90 килограма. Нужните 3500 калории се разпределят така:
+                        </p>
+                        <ul>
+                            <li>30% протеин = 1050 калории = 262г протеин дневно</li>
+                            <li>55% въглехидрати = 1,925 калории = 481г въглехидрати дневно</li>
+                            <li>15% мазнини = 525 калории = 58гр мазнини дневно</li>
+                        </ul>
+                        <a @click='active_section=4' class="primary-btn pricing-btn">Виж повече...</a>
+                        <a @click='active_section=4' class="thumb-icon">
+                            <i class="fa fa-file-o"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-8">
@@ -430,9 +472,71 @@
         </div>
     </section>
     <!-- Pricing Section End -->
+<!-- Меню "Хранителни режими" край -->
+
+<!-- Секция "Примерно меню" начало -->
+    <!-- Blog Details Hero Section Begin -->
+    <section class="blog-details-hero set-bg" data-setbg="img/blog/details/details-hero.jpg" v-if="active_section==4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 p-0 m-auto">
+                    <div class="bh-text">
+                        <h3>Примерен хранителен план за мускулна маса</h3>
+                        <ul>
+                            <li>автор Admin</li>
+                            <li>Януари,15, 2025</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Details Hero Section End -->
+
+    <!-- Blog Details Section Begin -->
+    <section class="blog-details-section spad" v-if="active_section==4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 p-0 m-auto">
+                    <div class="blog-details-text">
+                        <div class="blog-details-title">
+                            <h5>Закуска (8 часа)</h5>
+                            <p>6 белтъка и два жълтъка разбъркани с извара (50грама)</p>
+                            <p>1 голяма купа овесени ядки (около 100 гр) с прясно или кисело мляко с една лъжица мед</p>
+                            <p>1 голям банан, грейпфрут, ананас или круша</p>
+                            <h5 class="mt-5">Предобедна закуска (10 часа)</h5>
+                            <p>50 грама ядки(по възможност сурови)</p>
+                            <h5 class="mt-5">Обед (12 часа)</h5>
+                            <p>250-300грама телешко месо</p>
+                            <p>2 големи варени картофа</p>
+                            <p>зелена салата с една лъжица зехтин</p>
+                            <p>250 мл вода</p>
+                            <h5 class="mt-5">Хранене трето (15 часа)</h5>
+                            <p>Пуешко филе на скара или варено (около 200 грама)</p>
+                            <p>1 голяма купа ориз</p>
+                            <p>салата зеле и моркови с една лъжица зехтин</p>
+                            <h5 class="mt-5">Хранене след тренировка (18:30 часа)</h5>
+                            <p>150 гр. риба на скара</p>
+                            <p>2 големи варени картофа</p>
+                            <p>зелена салата с една лъжица зехтин</p>
+                            <p>250 мл. вода</p>
+                            <h5 class="mt-5">Вечеря (21:30 часа)</h5>
+                            <p>1 брой големи пилешки гърди на скара или варени</p>
+                            <p>зелена салата с една лъжица зехтин</p>
+                            <p>250 мл. вода</p>
+                            <p class="mt-5">Ако не сте си легнали 3 часа след последното хранете, ви препоръчвам да изядете 8 белтъка
+                                (сварени). Часовете са примерни!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Details Section End -->
+<!-- Секция "Примерно меню" край -->
 
     <!-- Get In Touch Section Begin -->
-    <div class="gettouch-section">
+    <div class="gettouch-section" v-if="active_section==0">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
