@@ -177,3 +177,41 @@ Vue.component('my-component', {
 <button v-on:click="increment">Увеличи</button>
 
 ///
+
+ // Промяна на текст на елемент с ID "example"
+document.getElementById("example").innerText = "Нов текст";
+
+///
+
+
+// Добавяне на обработчик за кликване на бутон
+document.getElementById("myButton").addEventListener("click", function() {
+    alert("Бутонът беше натиснат!");
+});
+//////////////////////////////////////////////
+
+// Създаване на нов AJAX з-request
+let xhr = new XMLHttpRequest();
+xhr.open("GET", "data.json", true);
+xhr.onload = function () {
+    if (xhr.status === 200) {
+        console.log(JSON.parse(xhr.responseText));
+    }
+};
+xhr.send();
+
+
+/////////////////////////
+
+// Стрелкова функция
+const sum = (a, b) => a + b;
+
+// Клас в ES6
+class Person {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+
+//////////////////
