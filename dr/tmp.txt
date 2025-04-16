@@ -107,111 +107,121 @@ Vue.js за реактивност (5 страници)
 
 //////////
 
-let car = {
-    make: 'Toyota',
-    model: 'Corolla',
-    year: 2020,
-    start: function() {
-        console.log('Car started');
-    }
-};
-
-car.start(); // Извежда 'Car started'
-
-
-//////////
-$('p').css('color', 'blue');
-
-///////
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>         ///
-///////////////
-
-$(document).ready(function() {
-    // Вашият код тук
-});
-///////
-
-$("#myElement")
-////
-
-$(".myClass")
-
-//
-
-$("div")А
-///
-$("div.myClass")
-
-//
-
-$("[type='text']")
-
-//
-
-$("#myElement").hide();
-//
-
-$("#myElement").show();
-//
-
-
-Vue.component('my-component', {
-    data: function() {
-        return {
-            message: 'Здравей, свят!'
-        }
-    },
-    template: '<div>{{ message }}</div>'
-});
-
-
-/////
-
-
-<div id="app">
-    <h1>{{ title }}</h1>
-    <p>{{ message }}</p>
-</div>
-///
-
-<button v-on:click="increment">Увеличи</button>
-
-///
-
- // Промяна на текст на елемент с ID "example"
-document.getElementById("example").innerText = "Нов текст";
-
-///
-
-
-// Добавяне на обработчик за кликване на бутон
-document.getElementById("myButton").addEventListener("click", function() {
-    alert("Бутонът беше натиснат!");
-});
-//////////////////////////////////////////////
-
-// Създаване на нов AJAX з-request
-let xhr = new XMLHttpRequest();
-xhr.open("GET", "data.json", true);
-xhr.onload = function () {
-    if (xhr.status === 200) {
-        console.log(JSON.parse(xhr.responseText));
-    }
-};
-xhr.send();
-
-
-/////////////////////////
-
-// Стрелкова функция
-const sum = (a, b) => a + b;
-
-// Клас в ES6
-class Person {
-    constructor(name) {
-        this.name = name;
-    }
+computed: {
+  numericAge() {
+    const parsedAge = parseInt(this.age, 10);
+    return isNaN(parsedAge) ? 20 : parsedAge;  // Ако неще да се преобразува, по подразбиране 20
+  },
+  numericHeight() {
+    const parsedHeight = parseInt(this.height, 10);
+    return isNaN(parsedHeight) ? 170 : parsedHeight;  // По подразбиране 170 см
+  },
+  numericWeight() {
+    const parsedWeight = parseInt(this.weight, 10);
+    return isNaN(parsedWeight) ? 60 : parsedWeight;  // По подразбиране 60 кг
+  },
+  numericActivity() {
+    const parsedActivity = parseFloat(this.activity);
+    return isNaN(parsedActivity) ? 1.375 : parsedActivity;  // Ниво на активност по подразбиране
+  },
 }
 
 
+
+///////////////////
+
+
+methods: {
+  calculate() {
+    // Изчисляване на BMI
+    const numericBMI = this.numericWeight / ((this.numericHeight / 100) ** 2);
+    this.bmi = numericBMI.toFixed(2); // Форматиране до 2 десетични знака
+
+    // Категоризация на тегловна категория
+    if (numericBMI < 18.5) {
+      this.wCat = 'Недостатъчно тегло';
+    } else if (numericBMI < 25.0) {
+      this.wCat = 'Нормално тегло';
+    } else if (numericBMI < 30.0) {
+      this.wCat = 'Наднормено тегло';
+    } else if (numericBMI < 35.0) {
+      this.wCat = 'Затлъстяване степен I';
+    } else if (numericBMI < 40.0) {
+      this.wCat = 'Затлъстяване степен II';
+    } else {
+      this.wCat = 'Затлъстяване степен III';
+    }
+
+    // Изчисляване на BMR по формулата на Харис-Бенедикт
+    let numericBMR = 0;
+    if (this.sex === 'male') {
+      numericBMR = 88.362 + (13.397 * this.numericWeight) + (4.799 * this.numericHeight) - (5.677 * this.numericAge);
+    } else {
+      numericBMR = 447.593 + (9.247 * this.numericWeight) + (3.098 * this.numericHeight) - (4.330 * this.numericAge);
+    }
+    this.bmr = numericBMR.toFixed(2);
+
+    // Калориен баланс (BMR умножен по коефициент на активност)
+    const numericCal = numericBMR * this.numericActivity;
+    this.calB = numericCal.toFixed(2);
+  }
+}
 //////////////////
+
+watch: {
+  active_section(newVal) {
+    if (newVal === 0) {
+      this.$nextTick(() => {
+        this.initSlider();
+      });
+    } else {
+      this.destroySlider();
+    }
+    this.$nextTick(() => {
+      this.setupBackground();
+    });
+  }
+},
+
+methods: {
+  setupBackground() {
+    $(".set-bg").each(function() {
+      const bg = $(this).data("setbg");
+      if (bg) {
+        $(this).css("background-image", 'url(' + bg + ')');
+      }
+    });
+  },
+  initSlider() {
+    this.setupBackground();
+    const hero_s = $(".hs-slider");
+    hero_s.owlCarousel({
+      loop: true,
+      margin: 0,
+      nav: true,
+      items: 1,
+      dots: false,
+      animateOut: 'fadeOut',
+      animateIn: 'fadeIn',
+      smartSpeed: 1200,
+      autoHeight: false,
+      autoplay: true,
+      navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>']
+    });
+  },
+  destroySlider() {
+    const hero_s = $(".hs-slider");
+    if (hero_s.hasClass("owl-loaded")) {
+      hero_s.trigger('destroy.owl.carousel');
+      hero_s.find('.owl-stage-outer').children().unwrap();
+      hero_s.removeClass("owl-center owl-loaded owl-text-select-on");
+    }
+  }
+}
+
+//////////////
+mounted() {
+  if (this.active_section === 0) {
+    this.initSlider();
+  }
+}
