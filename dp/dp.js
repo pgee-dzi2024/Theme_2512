@@ -2,11 +2,11 @@ const App = {
     data() {
         return {
             active_section: 0,
-            bmi:'1', //BMI (индекс на телесната маса)
+            bmi:'', //BMI (индекс на телесната маса)
             wCat:'2', //Теглова категория
             bmr:'3', //BMR (базов метаболитен ритъм)
             calB:'4', //Kалориен баланс
-            height:'5',
+            height:'',
             weight:'6',
             age:'7',
             sex:'male',
