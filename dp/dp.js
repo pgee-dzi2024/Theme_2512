@@ -3,14 +3,14 @@ const App = {
         return {
             active_section: 0,
             bmi:'', //BMI (индекс на телесната маса)
-            wCat:'2', //Теглова категория
-            bmr:'3', //BMR (базов метаболитен ритъм)
-            calB:'4', //Kалориен баланс
+            wCat:'', //Теглова категория
+            bmr:'', //BMR (базов метаболитен ритъм)
+            calB:'', //Kалориен баланс
             height:'',
-            weight:'6',
-            age:'7',
+            weight:'',
+            age:'',
             sex:'male',
-            activity:'1.2',
+            activity:'',
         };
     },
     watch: {
@@ -81,6 +81,7 @@ const App = {
           }
         },
         calculate(){
+            if (this.numericHeight==0){this.numericHeight=1}
             const numericBMI = this.numericWeight / ((this.numericHeight/100) ** 2); // Тегло (kg) / Ръст (m)^2
             console.log(numericBMI)
             this.bmi = `${numericBMI.toFixed(2)}`; // Закръгляне до две цифри след десетичната точка
